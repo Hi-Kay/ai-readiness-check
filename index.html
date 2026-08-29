@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Adoption Readiness Check — Heike Romanowski</title>
+<style>
+  :root {
+    --green:       #3D5C3A;
+    --green-light: #5A8055;
+    --green-pale:  #EBF2EA;
+    --green-mid:   #C5D9C3;
+    --dark:        #1A1A1A;
+    --mid:         #555;
+    --light:       #F7F9F7;
+    --border:      #D8E5D7;
+    --white:       #FFFFFF;
+    --amber:       #B8860B;
+    --amber-pale:  #FFF8E6;
+    --red:         #8B2020;
+    --red-pale:    #FFF0F0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────── */
+  header {
+    background: var(--green);
+    color: white;
+    padding: 36px 48px 28px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  header .lead {
+    font-size: 15px;
+    opacity: 0.86;
+    max-width: 660px;
+    line-height: 1.55;
+  }
+  .header-meta {
+    margin-top: 18px;
+    font-size: 12px;
+    opacity: 0.65;
+    letter-spacing: 0.3px;
+  }
+  .header-meta a { color: white; text-decoration: underline; }
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    max-width: 1180px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .questions {
+    padding: 32px 40px;
+    border-right: 1px solid var(--border);
+  }
+
+  /* ── Dimension block ─────────────────────────────────────────────── */
+  .dim {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+  }
+  .dim h2 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .dim h2 .num {
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .dim .why {
+    font-size: 12.5px;
+    color: #7a7a7a;
+    font-style: italic;
+    margin: 0 0 16px 31px;
+    line-height: 1.5;
+  }
+
+  .q { margin-bottom: 18px; }
+  .q:last-child { margin-bottom: 0; }
+  .q .text {
+    font-size: 14px;
+    color: var(--dark);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .opts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .opts label {
+    display: block;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--mid);
+    padding: 8px 4px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    line-height: 1.3;
+  }
+  .opts label:hover { border-color: var(--green-light); background: var(--green-pale); }
+  .opts input { position: absolute; opacity: 0; pointer-events: none; }
+  .opts input:checked + span {
+    display: block;
+  }
+  .opts label.sel {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .opts label:focus-within {
+    outline: 2px solid var(--green-light);
+    outline-offset: 2px;
+  }
+
+  /* ── Results panel ───────────────────────────────────────────────── */
+  .results {
+    padding: 32px;
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  .results h2 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .progress-wrap { margin-bottom: 18px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--mid);
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--green-pale);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green-light);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .score-card {
+    background: var(--green);
+    color: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .score-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+  .score-card .score {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .score-card .score span { font-size: 20px; opacity: 0.7; }
+  .score-card .stage {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .score-card .verdict {
+    font-size: 12.5px;
+    opacity: 0.85;
+    line-height: 1.5;
+  }
+  .score-card.incomplete { background: #8a8a8a; }
+
+  .dim-scores {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .dim-scores h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--mid);
+    margin-bottom: 14px;
+  }
+  .ds-item { margin-bottom: 11px; }
+  .ds-item:last-child { margin-bottom: 0; }
+  .ds-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 12.5px;
+    margin-bottom: 4px;
+    gap: 8px;
+  }
+  .ds-label .name { color: var(--mid); font-weight: 500; }
+  .ds-label .status {
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .ds-track {
+    height: 7px;
+    background: #ECECEC;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .ds-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0;
+  }
+  .st-strong  { color: var(--green); }
+  .st-develop { color: var(--amber); }
+  .st-risk    { color: var(--red); }
+  .fill-strong  { background: var(--green); }
+  .fill-develop { background: var(--amber); }
+  .fill-risk    { background: var(--red); }
+  .fill-none    { background: #CFCFCF; }
+
+  .recs {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .recs h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--mid);
+    margin-bottom: 6px;
+  }
+  .recs .sub {
+    font-size: 11.5px;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .rec {
+    border-left: 3px solid var(--green-mid);
+    padding: 0 0 0 12px;
+    margin-bottom: 14px;
+  }
+  .rec:last-child { margin-bottom: 0; }
+  .rec.prio-risk    { border-left-color: var(--red); }
+  .rec.prio-develop { border-left-color: var(--amber); }
+  .rec .rtitle {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .rec ul { margin: 0; padding-left: 16px; }
+  .rec li {
+    font-size: 12.5px;
+    color: var(--mid);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .rec li:last-child { margin-bottom: 0; }
+
+  .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  button {
+    flex: 1;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 9px 12px;
+    border-radius: 7px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  button:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+
+  .note {
+    font-size: 11.5px;
+    color: #999;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .note a { color: var(--green); font-weight: 600; text-decoration: none; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 18px 48px;
+    font-size: 12px;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--green); text-decoration: none; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .questions { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 18px; }
+    .results { position: static; max-height: none; padding: 24px 18px; }
+    header { padding: 24px 20px 20px; }
+    footer { padding: 18px 20px; }
+    .opts { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media print {
+    .results { position: static; max-height: none; overflow: visible; }
+    .layout { grid-template-columns: 1fr; display: block; }
+    .questions { border: none; }
+    .btn-row, .opts label:not(.sel) { display: none; }
+    .dim, .recs, .dim-scores { break-inside: avoid; }
+    header { background: var(--green) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Adoption Readiness Check</h1>
+  <p class="lead">Giving people access to AI tools does not change how they work. This 21-question diagnostic shows where your organisation is actually ready to adopt AI — and what to fix first, before you build the business case.</p>
+  <div class="header-meta">
+    Built by <a href="https://linkedin.com/in/heike-romanowski" target="_blank">Heike Romanowski</a>
+    &nbsp;·&nbsp; From three years driving enterprise AI adoption in heavy industry
+    &nbsp;·&nbsp; Nothing is uploaded — everything stays in your browser
+  </div>
+</header>
+
+<div class="layout">
+  <div class="questions" id="questions"></div>
+
+  <div class="results">
+    <h2>Your Readiness</h2>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Answered</span>
+        <span id="progressText">0 of 21</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="score-card incomplete" id="scoreCard">
+      <div class="label">Overall readiness</div>
+      <div class="score" id="scoreVal">—</div>
+      <div class="stage" id="stageVal">Answer the questions to see your result</div>
+      <div class="verdict" id="verdictVal">Your score updates as you go. There are no right answers — an honest low score is more useful than a flattering one.</div>
+    </div>
+
+    <div class="dim-scores">
+      <h3>By dimension</h3>
+      <div id="dimScores"></div>
+    </div>
+
+    <div class="recs" id="recsBox">
+      <h3>Where to start</h3>
+      <div class="sub" id="recsSub">Your weakest dimensions appear here with concrete first actions.</div>
+      <div id="recsList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button onclick="window.print()">Print / Save PDF</button>
+      <button onclick="resetAll()">Reset</button>
+    </div>
+
+    <p class="note">
+      A diagnostic, not a verdict — the conversation it starts matters more than the number.<br><br>
+      <a href="https://linkedin.com/in/heike-romanowski" target="_blank">Connect on LinkedIn →</a>
+    </p>
+  </div>
+</div>
+
+<footer>
+  <span>AI Adoption Readiness Check · Built by <a href="https://linkedin.com/in/heike-romanowski" target="_blank">Heike Romanowski</a></span>
+  <span>Runs entirely in your browser · No data collected · 2026</span>
+</footer>
+
+<script>
+// ── Model ─────────────────────────────────────────────────────────────────────
+const SCALE = ['Not yet', 'Just starting', 'Partly', 'Firmly in place'];
+
+const DIMENSIONS = [
+  {
+    key: 'leadership',
+    name: 'Leadership & sponsorship',
+    why: 'Adoption that is delegated downwards stalls. People copy what leaders do, not what they announce.',
+    questions: [
+      'Our leadership team uses AI tools themselves in their own daily work.',
+      'There is a named owner for AI adoption with budget and decision-making authority.',
+      'Leadership has explained why AI matters for our business in concrete terms, not as a slogan.'
+    ],
+    recs: [
+      'Ask the sponsor to use the tool publicly for one real task — a board summary, a customer email — and to say so out loud. Nothing moves adoption faster.',
+      'Name one accountable owner with budget. "Everyone owns it" reliably means nobody does.',
+      'Replace "we are becoming an AI company" with two or three specific business outcomes people can picture.'
+    ]
+  },
+  {
+    key: 'usecases',
+    name: 'Use-case clarity',
+    why: 'A tool without a job is a toy. Most stalled rollouts fail here, not on technology.',
+    questions: [
+      'Teams can name specific tasks where AI should help them — not just "AI in general".',
+      'We have prioritised use cases by business value rather than by who was curious first.',
+      'We are clear about which work should not be done with AI, and why.'
+    ],
+    recs: [
+      'Run a 90-minute workshop per team: list the recurring weekly tasks, mark the text- and data-heavy ones, pick the three with the most repetition.',
+      'Score the shortlist on value and effort. Start with high-value, low-effort — early proof buys patience for the harder cases.',
+      'Write the no-go list down. Clear boundaries increase usage, because people stop worrying they are breaking a rule.'
+    ]
+  },
+  {
+    key: 'skills',
+    name: 'Skills & enablement',
+    why: 'Handing out licences is not enablement. Capability spreads through people, not emails.',
+    questions: [
+      'New users get structured onboarding, not just an account and a link.',
+      'We have internal champions or multipliers who help colleagues in their own department.',
+      'People know how to iterate when the first output is wrong, instead of concluding "it does not work".'
+    ],
+    recs: [
+      'Replace the account handout with a 60-minute onboarding built around three use cases for that specific role.',
+      'Recruit one champion per department and give them protected time, not just the title — this is where Train-the-Trainer either works or quietly dies.',
+      'Teach one habit above all: when the answer is wrong, say what was wrong and ask again. Most "AI is useless" verdicts come from single-attempt use.'
+    ]
+  },
+  {
+    key: 'technical',
+    name: 'Technical foundation',
+    why: 'Friction beats enthusiasm. Every extra step between intent and use costs you a share of your users.',
+    questions: [
+      'Access is provisioned quickly — SSO and licences without a long IT queue.',
+      'AI tools can reach the systems and documents where our work actually lives.',
+      'We have a route to automate a workflow on the API when it turns out to be repetitive.'
+    ],
+    recs: [
+      'Fix provisioning first. Adoption dies in ticket queues, and the people you lose are the ones who tried early.',
+      'Connect the tool to real context — documents, tickets, code. Disconnected from company knowledge, it stays a clever writing aid.',
+      'Give repetitive workflows a path from chat to API. Seats create individual productivity; automation is where consumption and compounding value begin.'
+    ]
+  },
+  {
+    key: 'governance',
+    name: 'Governance, security & compliance',
+    why: 'In DACH this is rarely the reason to say no — but late involvement is the most common reason for delay.',
+    questions: [
+      'Security and data protection have reviewed and approved how we use AI.',
+      'Employees know clearly which data they may and may not put into AI tools.',
+      'Where required, the works council (Betriebsrat) is involved and an agreement is in place or in progress.'
+    ],
+    recs: [
+      'Start the security review before the rollout, not after the pilot succeeds. Retrofitted approval is where months disappear.',
+      'Publish one page: what data is fine, what is not, who to ask when unsure. Ambiguity does not make people careful — it makes them stop.',
+      'Involve the Betriebsrat early and treat them as a design partner. In German enterprises an early Betriebsvereinbarung is dramatically faster than one negotiated after a stalled rollout.'
+    ]
+  },
+  {
+    key: 'trust',
+    name: 'Trust & culture',
+    why: 'People do not adopt a tool they suspect is there to replace them. This is the quiet blocker nobody puts in a slide.',
+    questions: [
+      'People are open about using AI — it is not something done quietly at desks.',
+      'Employees believe AI is meant to support their work rather than replace them.',
+      'When something goes wrong with a new tool, it is treated as learning rather than as a mistake.'
+    ],
+    recs: [
+      'Answer the replacement question out loud, honestly and specifically. Silence is heard as confirmation.',
+      'Make usage visible in a good way: share what worked in team meetings, so using AI reads as competent rather than as cheating.',
+      'Have a respected person share a failure publicly. Permission to get it wrong is what makes people try a second time.'
+    ]
+  },
+  {
+    key: 'measurement',
+    name: 'Measurement & value tracking',
+    why: 'You cannot expand what you cannot see. Licences bought is not a usage metric.',
+    questions: [
+      'We can see who is actively using AI, not only who holds a licence.',
+      'We have agreed what "value" means for this investment and we measure it.',
+      'Adoption and value are reviewed regularly with the business, not only with IT.'
+    ],
+    recs: [
+      'Track weekly active users against licences. The gap between the two is your entire adoption opportunity, in one number.',
+      'Agree two or three value metrics before the rollout — hours returned, cycle time, quality. Metrics chosen afterwards always look invented.',
+      'Review adoption with business owners quarterly, not with IT monthly. Value conversations belong with the people who own the outcome.'
+    ]
+  }
+];
+
+const TOTAL_Q = DIMENSIONS.reduce((n, d) => n + d.questions.length, 0);
+const MAX_PER_Q = 3;
+
+const STAGES = [
+  { min: 0,  max: 34,  name: 'Exploring',
+    verdict: 'Foundations are not in place yet. Pilots here tend to impress in the demo and fade within a quarter. Fix the weakest dimensions below before scaling licences — buying more seats now would mostly buy more unused seats.' },
+  { min: 35, max: 59,  name: 'Building',
+    verdict: 'Real momentum, uneven ground. You likely have enthusiastic pockets and structural gaps. Target the two weakest dimensions; adoption is limited by its weakest link, not lifted by its strongest.' },
+  { min: 60, max: 79,  name: 'Scaling',
+    verdict: 'The foundations hold and adoption can now grow deliberately. Push from individual productivity toward automated workflows, and make value measurement routine before the next expansion conversation.' },
+  { min: 80, max: 100, name: 'Embedded',
+    verdict: 'AI is part of how work happens here. The remaining gains come from depth rather than breadth: harder use cases, deeper integration, and evidence solid enough to defend the investment.' }
+];
+
+const answers = {};
+
+// ── Render questions ──────────────────────────────────────────────────────────
+function renderQuestions() {
+  const root = document.getElementById('questions');
+  root.innerHTML = DIMENSIONS.map((dim, di) => `
+    <div class="dim">
+      <h2><span class="num">${di + 1}</span> ${dim.name}</h2>
+      <p class="why">${dim.why}</p>
+      ${dim.questions.map((q, qi) => {
+        const id = `${dim.key}_${qi}`;
+        return `
+        <div class="q">
+          <div class="text">${q}</div>
+          <div class="opts" role="radiogroup" aria-label="${q.replace(/"/g, '&quot;')}">
+            ${SCALE.map((s, si) => `
+              <label id="lbl_${id}_${si}" onclick="setAnswer('${id}', ${si})">
+                <input type="radio" name="${id}" value="${si}"
+                       onchange="setAnswer('${id}', ${si})"
+                       onfocus="this.parentNode.classList.add('focus')"
+                       onblur="this.parentNode.classList.remove('focus')">
+                ${s}
+              </label>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+}
+
+function setAnswer(id, value) {
+  answers[id] = value;
+  for (let i = 0; i < SCALE.length; i++) {
+    const el = document.getElementById(`lbl_${id}_${i}`);
+    if (el) el.classList.toggle('sel', i === value);
+  }
+  update();
+}
+
+function resetAll() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.opts label').forEach(l => l.classList.remove('sel'));
+  document.querySelectorAll('.opts input').forEach(i => { i.checked = false; });
+  update();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Scoring ───────────────────────────────────────────────────────────────────
+function dimScore(dim) {
+  let sum = 0, answered = 0;
+  dim.questions.forEach((_, qi) => {
+    const v = answers[`${dim.key}_${qi}`];
+    if (v !== undefined) { sum += v; answered++; }
+  });
+  return {
+    answered,
+    total: dim.questions.length,
+    pct: answered ? Math.round((sum / (answered * MAX_PER_Q)) * 100) : null
+  };
+}
+
+function statusOf(pct) {
+  if (pct === null)  return { cls: 'none',    label: '—',          text: '' };
+  if (pct >= 67)     return { cls: 'strong',  label: '✓ Strong',   text: 'st-strong' };
+  if (pct >= 34)     return { cls: 'develop', label: '◐ Developing', text: 'st-develop' };
+  return               { cls: 'risk',    label: '! At risk',  text: 'st-risk' };
+}
+
+function update() {
+  const answeredCount = Object.keys(answers).length;
+
+  // Progress
+  document.getElementById('progressText').textContent = `${answeredCount} of ${TOTAL_Q}`;
+  document.getElementById('progressFill').style.width = (answeredCount / TOTAL_Q * 100) + '%';
+
+  // Per-dimension
+  const scores = DIMENSIONS.map(d => ({ dim: d, ...dimScore(d) }));
+  document.getElementById('dimScores').innerHTML = scores.map(s => {
+    const st = statusOf(s.pct);
+    return `
+      <div class="ds-item">
+        <div class="ds-label">
+          <span class="name">${s.dim.name}</span>
+          <span class="status ${st.text}">${s.pct === null ? '—' : st.label + ' · ' + s.pct + '%'}</span>
+        </div>
+        <div class="ds-track"><div class="ds-fill fill-${st.cls}" style="width:${s.pct === null ? 0 : s.pct}%"></div></div>
+      </div>`;
+  }).join('');
+
+  // Overall
+  const card = document.getElementById('scoreCard');
+  if (answeredCount === 0) {
+    card.classList.add('incomplete');
+    document.getElementById('scoreVal').textContent = '—';
+    document.getElementById('stageVal').textContent = 'Answer the questions to see your result';
+    document.getElementById('verdictVal').textContent = 'Your score updates as you go. There are no right answers — an honest low score is more useful than a flattering one.';
+  } else {
+    const sum = Object.values(answers).reduce((a, b) => a + b, 0);
+    const overall = Math.round((sum / (answeredCount * MAX_PER_Q)) * 100);
+    const stage = STAGES.find(s => overall >= s.min && overall <= s.max);
+    card.classList.remove('incomplete');
+    document.getElementById('scoreVal').innerHTML = overall + '<span>%</span>';
+    document.getElementById('stageVal').textContent = stage.name;
+    document.getElementById('verdictVal').textContent =
+      (answeredCount < TOTAL_Q ? `Based on ${answeredCount} of ${TOTAL_Q} answers. ` : '') + stage.verdict;
+  }
+
+  // Recommendations — weakest answered dimensions first
+  const weak = scores.filter(s => s.pct !== null && s.pct < 67)
+                     .sort((a, b) => a.pct - b.pct)
+                     .slice(0, 3);
+  const list = document.getElementById('recsList');
+  const sub = document.getElementById('recsSub');
+
+  if (answeredCount === 0) {
+    sub.textContent = 'Your weakest dimensions appear here with concrete first actions.';
+    list.innerHTML = '';
+  } else if (weak.length === 0) {
+    sub.textContent = 'No dimension is below the threshold in what you have answered so far.';
+    list.innerHTML = `<div class="rec"><div class="rtitle">Keep going deeper</div><ul>
+      <li>Move from individual productivity to automated workflows — that is where value compounds.</li>
+      <li>Document what already works as internal case studies; they are what convince the next department.</li></ul></div>`;
+  } else {
+    sub.textContent = `Your ${weak.length === 1 ? 'weakest area' : weak.length + ' weakest areas'}, most urgent first.`;
+    list.innerHTML = weak.map(s => {
+      const st = statusOf(s.pct);
+      return `
+        <div class="rec prio-${st.cls}">
+          <div class="rtitle">${s.dim.name} — ${s.pct}%</div>
+          <ul>${s.dim.recs.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>`;
+    }).join('');
+  }
+}
+
+renderQuestions();
+update();
+</script>
+</body>
+</html>
