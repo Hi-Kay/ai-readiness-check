@@ -120,8 +120,8 @@
 
   .opts {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
   }
   .opts label {
     display: block;
@@ -381,7 +381,7 @@
 
 <header>
   <h1>AI Adoption Readiness Check</h1>
-  <p class="lead">Giving people access to AI tools does not change how they work. This 21-question diagnostic shows where your organisation is actually ready to adopt AI — and what to fix first, before you build the business case.</p>
+  <p class="lead">Giving people access to AI tools does not change how they work. Fourteen questions, about two minutes: where your organisation is actually ready to adopt AI — and what to fix first, before you build the business case.</p>
   <div class="header-meta">
     Built by <a href="https://linkedin.com/in/heike-romanowski" target="_blank">Heike Romanowski</a>
     &nbsp;·&nbsp; From three years driving enterprise AI adoption in heavy industry
@@ -440,7 +440,9 @@
 
 <script>
 // ── Model ─────────────────────────────────────────────────────────────────────
-const SCALE = ['Not yet', 'Just starting', 'Partly', 'Firmly in place'];
+// Every question carries its own four answer options, ordered weakest → strongest.
+// One generic scale cannot fit questions this different, so each is worded to fit.
+const OPTION_COUNT = 4;
 
 const DIMENSIONS = [
   {
@@ -448,9 +450,10 @@ const DIMENSIONS = [
     name: 'Leadership & sponsorship',
     why: 'Adoption that is delegated downwards stalls. People copy what leaders do, not what they announce.',
     questions: [
-      'Our leadership team uses AI tools themselves in their own daily work.',
-      'There is a named owner for AI adoption with budget and decision-making authority.',
-      'Leadership has explained why AI matters for our business in concrete terms, not as a slogan.'
+      { text: 'How visibly does your leadership team use AI tools themselves?',
+        opts: ['Not at all', 'One or two do', 'Several, now and then', 'Routinely and openly'] },
+      { text: 'Who owns AI adoption in your organisation?',
+        opts: ['Nobody', 'Shared, unclear', 'A team, no budget', 'Named owner with budget'] }
     ],
     recs: [
       'Ask the sponsor to use the tool publicly for one real task — a board summary, a customer email — and to say so out loud. Nothing moves adoption faster.',
@@ -463,9 +466,10 @@ const DIMENSIONS = [
     name: 'Use-case clarity',
     why: 'A tool without a job is a toy. Most stalled rollouts fail here, not on technology.',
     questions: [
-      'Teams can name specific tasks where AI should help them — not just "AI in general".',
-      'We have prioritised use cases by business value rather than by who was curious first.',
-      'We are clear about which work should not be done with AI, and why.'
+      { text: 'Can teams name specific tasks where AI should help them?',
+        opts: ['No, it stays abstract', 'A few enthusiasts can', 'Most teams have ideas', 'Yes, prioritised by value'] },
+      { text: 'Is it clear which work should not be done with AI?',
+        opts: ['Never discussed', 'Informal opinions', 'Guidance exists', 'Written down and known'] }
     ],
     recs: [
       'Run a 90-minute workshop per team: list the recurring weekly tasks, mark the text- and data-heavy ones, pick the three with the most repetition.',
@@ -478,9 +482,10 @@ const DIMENSIONS = [
     name: 'Skills & enablement',
     why: 'Handing out licences is not enablement. Capability spreads through people, not emails.',
     questions: [
-      'New users get structured onboarding, not just an account and a link.',
-      'We have internal champions or multipliers who help colleagues in their own department.',
-      'People know how to iterate when the first output is wrong, instead of concluding "it does not work".'
+      { text: 'What does a new user actually get on day one?',
+        opts: ['Just an account', 'Account and a link', 'A short intro session', 'Onboarding for their role'] },
+      { text: 'Are there champions who help colleagues in their own team?',
+        opts: ['None', 'A few, informally', 'Yes, unofficially', 'Yes, with protected time'] }
     ],
     recs: [
       'Replace the account handout with a 60-minute onboarding built around three use cases for that specific role.',
@@ -493,9 +498,10 @@ const DIMENSIONS = [
     name: 'Technical foundation',
     why: 'Friction beats enthusiasm. Every extra step between intent and use costs you a share of your users.',
     questions: [
-      'Access is provisioned quickly — SSO and licences without a long IT queue.',
-      'AI tools can reach the systems and documents where our work actually lives.',
-      'We have a route to automate a workflow on the API when it turns out to be repetitive.'
+      { text: 'How long does it take a new user to get access?',
+        opts: ['Weeks, or unclear', 'A long IT queue', 'A few days', 'Same day, via SSO'] },
+      { text: 'Can AI reach the systems and documents where your work lives?',
+        opts: ['No, fully isolated', 'Copy-paste only', 'Some integrations', 'Connected to key sources'] }
     ],
     recs: [
       'Fix provisioning first. Adoption dies in ticket queues, and the people you lose are the ones who tried early.',
@@ -508,9 +514,10 @@ const DIMENSIONS = [
     name: 'Governance, security & compliance',
     why: 'In DACH this is rarely the reason to say no — but late involvement is the most common reason for delay.',
     questions: [
-      'Security and data protection have reviewed and approved how we use AI.',
-      'Employees know clearly which data they may and may not put into AI tools.',
-      'Where required, the works council (Betriebsrat) is involved and an agreement is in place or in progress.'
+      { text: 'Where do security and data protection stand on AI use?',
+        opts: ['Not started', 'Under discussion', 'Approved for pilots', 'Approved for production'] },
+      { text: 'Is the works council (Betriebsrat) involved, where required?',
+        opts: ['Not yet', 'Aware, not involved', 'In discussion', 'Agreement in place / not required'] }
     ],
     recs: [
       'Start the security review before the rollout, not after the pilot succeeds. Retrofitted approval is where months disappear.',
@@ -523,9 +530,10 @@ const DIMENSIONS = [
     name: 'Trust & culture',
     why: 'People do not adopt a tool they suspect is there to replace them. This is the quiet blocker nobody puts in a slide.',
     questions: [
-      'People are open about using AI — it is not something done quietly at desks.',
-      'Employees believe AI is meant to support their work rather than replace them.',
-      'When something goes wrong with a new tool, it is treated as learning rather than as a mistake.'
+      { text: 'How openly do people talk about using AI in their work?',
+        opts: ['Quietly, if at all', 'A few are open', 'Openly in some teams', 'Openly, it is normal'] },
+      { text: 'Do employees believe AI is here to support rather than replace them?',
+        opts: ['Real fear, unaddressed', 'Concerns, unspoken', 'Addressed, some doubt', 'Yes, discussed openly'] }
     ],
     recs: [
       'Answer the replacement question out loud, honestly and specifically. Silence is heard as confirmation.',
@@ -538,9 +546,10 @@ const DIMENSIONS = [
     name: 'Measurement & value tracking',
     why: 'You cannot expand what you cannot see. Licences bought is not a usage metric.',
     questions: [
-      'We can see who is actively using AI, not only who holds a licence.',
-      'We have agreed what "value" means for this investment and we measure it.',
-      'Adoption and value are reviewed regularly with the business, not only with IT.'
+      { text: 'What can you actually see about usage?',
+        opts: ['Nothing', 'Licences bought', 'Logins', 'Weekly active users per team'] },
+      { text: 'How is the value of the investment tracked?',
+        opts: ['Not at all', 'Anecdotes', 'Some metrics', 'Agreed metrics, reviewed'] }
     ],
     recs: [
       'Track weekly active users against licences. The gap between the two is your entire adoption opportunity, in one number.',
@@ -577,9 +586,9 @@ function renderQuestions() {
         const id = `${dim.key}_${qi}`;
         return `
         <div class="q">
-          <div class="text">${q}</div>
-          <div class="opts" role="radiogroup" aria-label="${q.replace(/"/g, '&quot;')}">
-            ${SCALE.map((s, si) => `
+          <div class="text">${q.text}</div>
+          <div class="opts" role="radiogroup" aria-label="${q.text.replace(/"/g, '&quot;')}">
+            ${q.opts.map((s, si) => `
               <label id="lbl_${id}_${si}" onclick="setAnswer('${id}', ${si})">
                 <input type="radio" name="${id}" value="${si}"
                        onchange="setAnswer('${id}', ${si})"
@@ -596,7 +605,7 @@ function renderQuestions() {
 
 function setAnswer(id, value) {
   answers[id] = value;
-  for (let i = 0; i < SCALE.length; i++) {
+  for (let i = 0; i < OPTION_COUNT; i++) {
     const el = document.getElementById(`lbl_${id}_${i}`);
     if (el) el.classList.toggle('sel', i === value);
   }
@@ -698,6 +707,13 @@ function update() {
     }).join('');
   }
 }
+
+// ── Print / Save-PDF filename ─────────────────────────────────────────────────
+// Browsers take the suggested PDF filename from document.title, so swap in a
+// clean, descriptive one for the duration of printing.
+const PAGE_TITLE = document.title;
+window.addEventListener('beforeprint', () => { document.title = 'AI-Adoption-Readiness-Results'; });
+window.addEventListener('afterprint',  () => { document.title = PAGE_TITLE; });
 
 renderQuestions();
 update();

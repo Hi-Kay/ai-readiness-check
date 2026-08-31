@@ -1,6 +1,6 @@
 # AI Adoption Readiness Check
 
-**A 21-question diagnostic that shows where an organisation is actually ready to adopt AI — and what to fix first.**
+**A 14-question diagnostic that shows where an organisation is actually ready to adopt AI — and what to fix first.**
 
 👉 **[Take the assessment →](https://hi-kay.github.io/ai-readiness-check/)**
 
@@ -18,7 +18,7 @@ An ROI calculator answers *"what is the prize?"* — I built [one of those too](
 
 ## What it measures
 
-Seven dimensions, three questions each. Every one of them is somewhere I have watched a rollout succeed or stall:
+Seven dimensions, two questions each. Every one of them is somewhere I have watched a rollout succeed or stall:
 
 | Dimension | The question underneath |
 |---|---|
