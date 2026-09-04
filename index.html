@@ -477,7 +477,7 @@
     <div class="terminal-dots">
       <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
     </div>
-    <span>readiness // rag diagnostic</span>
+    <span>ai adoption // readiness</span>
   </div>
   <h1>Enterprise AI Adoption Readiness Check</h1>
   <p>Giving people access to AI tools does not change how they work. Twelve questions, about two minutes: where your organisation is actually ready to adopt AI, and what to fix first.</p>
@@ -495,31 +495,31 @@
   <!-- Right Column: RAG Diagnostic Dashboard -->
   <div class="csm-panel" id="mainPanel">
     <div class="panel-header-row">
-      <div class="panel-tag">Readiness Matrix</div>
-      <div class="rag-badge badge-neutral" id="statusBadge">Awaiting Signal</div>
+      <div class="panel-tag">Your readiness</div>
+      <div class="rag-badge badge-neutral" id="statusBadge">Not started</div>
     </div>
 
     <div class="score-display">
       <div class="score-val" id="totalScore">—</div>
       <span style="color: var(--text-muted); font-size: 0.9rem; font-family: var(--font-mono);">/ 100</span>
     </div>
-    <div class="stage-tag" id="maturityStage">Complete diagnostic to unlock</div>
+    <div class="stage-tag" id="maturityStage">Answer the questions to see your result</div>
     <div class="verdict-text" id="verdictSummary">
-      Each pillar is scored using a Red-Amber-Green system to highlight immediate deployment risks and expansion opportunities.
+      Each pillar is scored red, amber or green. There are no right answers — an honest low score is more useful than a flattering one.
     </div>
 
-    <div class="pillar-title">Pillar Health & RAG Status</div>
+    <div class="pillar-title">Pillar health</div>
     <div id="pillarBars"></div>
 
     <div class="action-box">
-      <h4>Targeted Action Plan</h4>
+      <h4>What to fix first</h4>
       <div id="actionList">
         <div style="font-size: 0.8rem; color: var(--text-muted);">Answer questions to surface tailored next steps.</div>
       </div>
     </div>
 
     <div class="btn-group">
-      <button onclick="window.print()">Export Summary (PDF)</button>
+      <button onclick="window.print()">Print / Save PDF</button>
       <button onclick="resetDiagnostic()">Reset</button>
     </div>
   </div>
@@ -535,7 +535,7 @@ const DIMENSIONS = [
   {
     key: 'leadership',
     name: 'Strategy & Leadership',
-    why: 'Adoption delegated downward stalls. Executive modeling drives departmental budget and alignment.',
+    why: 'Adoption that is delegated downwards stalls. People copy what leaders do, not what they announce.',
     questions: [
       {
         text: 'How visibly do senior leaders use AI in their own work?',
@@ -561,7 +561,7 @@ const DIMENSIONS = [
   {
     key: 'governance',
     name: 'Governance, Trust & Safety',
-    why: 'In European enterprises, compliance clarity is the gateway to moving from pilots to production.',
+    why: 'In European enterprises, unclear rules are what stops a pilot from becoming production.',
     questions: [
       {
         text: 'Are there clear corporate rules on where AI is permitted or off-limits?',
@@ -587,7 +587,7 @@ const DIMENSIONS = [
   {
     key: 'workflows',
     name: 'Workflows & System Integration',
-    why: 'Ad-hoc chat generates shallow engagement; deep system integration drives compounding consumption.',
+    why: 'Chat in a browser tab helps individuals. The value compounds when AI reaches the systems where the work actually lives.',
     questions: [
       {
         text: 'How does your company currently utilize AI in operations?',
@@ -613,7 +613,7 @@ const DIMENSIONS = [
   {
     key: 'culture',
     name: 'Enablement & Champions Network',
-    why: 'Handing out licenses does not drive adoption; peer champions scale workflows across units.',
+    why: 'Handing out licences is not enablement. Capability spreads through people, not emails.',
     questions: [
       {
         text: 'How frequently do teams share prompt templates and best practices?',
@@ -627,7 +627,7 @@ const DIMENSIONS = [
       },
       {
         text: 'How openly do employees discuss AI usage in their daily work?',
-        hint: 'Psychological safety vs. unspoken concerns of replacement.',
+        hint: 'Discussed openly, or quietly, with unspoken worry about being replaced.',
         opts: ['Quietly / secretly', 'Close peers only', 'Openly in some teams', 'Openly celebrated']
       }
     ],
@@ -679,10 +679,10 @@ function selectAnswer(id, val) {
 }
 
 function getRAG(pct) {
-  if (pct === null || pct === undefined) return { key: 'none', label: '—', cls: 'none', colorCls: '' };
-  if (pct >= 67) return { key: 'grn', label: '● GREEN (Strong)', cls: 'st-grn', fillCls: 'fill-grn', badgeCls: 'badge-grn', pCls: 'p-grn' };
-  if (pct >= 34) return { key: 'yel', label: '▲ YELLOW (Developing)', cls: 'st-yel', fillCls: 'fill-yel', badgeCls: 'badge-yel', pCls: 'p-yel' };
-  return { key: 'red', label: '■ RED (Critical Blocker)', cls: 'st-red', fillCls: 'fill-red', badgeCls: 'badge-red', pCls: 'p-red' };
+  if (pct === null || pct === undefined) return { key: 'none', sym: '—', word: '', cls: 'none', colorCls: '' };
+  if (pct >= 67) return { key: 'grn', sym: '●', word: 'Strong', cls: 'st-grn', fillCls: 'fill-grn', badgeCls: 'badge-grn', pCls: 'p-grn' };
+  if (pct >= 34) return { key: 'yel', sym: '▲', word: 'Developing', cls: 'st-yel', fillCls: 'fill-yel', badgeCls: 'badge-yel', pCls: 'p-yel' };
+  return { key: 'red', sym: '■', word: 'Needs work', cls: 'st-red', fillCls: 'fill-red', badgeCls: 'badge-red', pCls: 'p-red' };
 }
 
 function calculateResults() {
@@ -694,10 +694,10 @@ function calculateResults() {
   if (count === 0) {
     scoreVal.textContent = '—';
     scoreVal.className = 'score-val';
-    badge.textContent = 'Awaiting Signal';
+    badge.textContent = 'Not started';
     badge.className = 'rag-badge badge-neutral';
     panel.className = 'csm-panel';
-    document.getElementById('maturityStage').textContent = 'Complete diagnostic to unlock';
+    document.getElementById('maturityStage').textContent = 'Answer the questions to see your result';
     return;
   }
 
@@ -720,21 +720,21 @@ function calculateResults() {
   scoreVal.textContent = overallScore;
 
   const overallRag = getRAG(overallScore);
-  badge.textContent = overallRag.key === 'grn' ? 'Healthy Signal' : overallRag.key === 'yel' ? 'Cautionary Signal' : 'High Friction Signal';
+  badge.textContent = overallRag.key === 'grn' ? 'On track' : overallRag.key === 'yel' ? 'Needs attention' : 'Significant blockers';
   badge.className = `rag-badge ${overallRag.badgeCls}`;
   scoreVal.className = `score-val color-${overallRag.key}`;
   panel.className = `csm-panel rag-${overallRag.key}`;
 
-  let stage = 'Exploring (Ad-hoc Pilots)';
+  let stage = 'Exploring — ad-hoc pilots';
   let verdict = 'Foundations are not in place yet. Pilots at this stage tend to impress in the demo and fade within a quarter. Fix the red pillars below before buying more licences — more seats now would mostly mean more unused seats.';
   if (overallScore >= 75) {
-    stage = 'Embedded (Enterprise Scale)';
+    stage = 'Embedded — part of how work happens';
     verdict = 'AI is part of how work happens here. The remaining gains come from depth rather than breadth: harder use cases, deeper system integration, and evidence solid enough to defend the investment.';
   } else if (overallScore >= 55) {
-    stage = 'Scaling (Multi-Team Rollout)';
+    stage = 'Scaling — multi-team rollout';
     verdict = 'The foundations hold and adoption can now grow deliberately. Push from individual productivity toward embedded workflows, and make value measurement routine before the next expansion.';
   } else if (overallScore >= 35) {
-    stage = 'Building (Structured Pilots)';
+    stage = 'Building — structured pilots';
     verdict = 'Real momentum on uneven ground — enthusiastic pockets alongside structural gaps. Target the weakest pillars first: adoption is limited by its weakest link, not lifted by its strongest.';
   }
   document.getElementById('maturityStage').textContent = stage;
@@ -746,7 +746,7 @@ function calculateResults() {
     <div class="p-item">
       <div class="p-head">
         <span style="font-weight: 500;">${p.dim.name}</span>
-        <span class="p-status ${p.rag.cls}">${p.pct !== null ? `${p.rag.label.split(' ')[0]} ${p.pct}%` : '—'}</span>
+        <span class="p-status ${p.rag.cls}">${p.pct !== null ? `${p.rag.sym} ${p.rag.word} ${p.pct}%` : '—'}</span>
       </div>
       <div class="p-track">
         <div class="p-fill ${p.pct !== null ? p.rag.fillCls : ''}" style="width: ${p.pct !== null ? p.pct : 0}%;"></div>
@@ -763,7 +763,7 @@ function calculateResults() {
   if (priorityPillars.length > 0) {
     actionBox.innerHTML = priorityPillars.map(wp => `
       <div class="prescription-card ${wp.rag.pCls}">
-        <strong>[${wp.rag.key.toUpperCase()}] ${wp.dim.name.toUpperCase()} (${wp.pct}%):</strong>
+        <strong>${wp.rag.sym} ${wp.dim.name} — ${wp.pct}%</strong>
         • ${wp.dim.prescriptions[0]}<br>
         • ${wp.dim.prescriptions[1]}
       </div>
@@ -772,7 +772,7 @@ function calculateResults() {
   } else {
     actionBox.innerHTML = `
       <div class="prescription-card p-grn">
-        <strong>GREEN // BUILD ON IT:</strong>
+        <strong>Nothing critical — build on it</strong>
         No pillar is below the threshold in what you have answered so far. The next gains come from depth: move repetitive workflows into automation, and write up what already works as internal case studies — they are what convince the next department.
       </div>`;
   }
@@ -783,7 +783,7 @@ function resetDiagnostic() {
   document.querySelectorAll('.opts-grid label').forEach(l => l.classList.remove('sel'));
   document.querySelectorAll('.opts-grid input').forEach(i => { i.checked = false; });
   document.getElementById('verdictSummary').textContent =
-    'Each pillar is scored using a Red-Amber-Green system to highlight immediate deployment risks and expansion opportunities.';
+    'Each pillar is scored red, amber or green. There are no right answers — an honest low score is more useful than a flattering one.';
   calculateResults();
   document.getElementById('pillarBars').innerHTML = '';
   document.getElementById('actionList').innerHTML = '<div style="font-size: 0.8rem; color: var(--text-muted);">Answer questions to surface tailored next steps.</div>';

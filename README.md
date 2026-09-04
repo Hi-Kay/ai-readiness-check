@@ -27,7 +27,7 @@ Four pillars, three questions each. Every one of them is somewhere I have watche
 | **Workflows & System Integration** | Is AI reaching the systems where the work lives, or stuck in ad-hoc chat? |
 | **Enablement & Champions Network** | Was there onboarding and peer support, or just a licence? |
 
-Answers are scored **Red / Amber / Green** per pillar. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a RAG breakdown, and **concrete first actions for your weakest pillars, worst first** — which is the part that actually matters.
+Each pillar is scored red, amber or green. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a pillar-by-pillar breakdown, and **concrete first actions for your weakest pillars, worst first** — which is the part that actually matters.
 
 ---
 
