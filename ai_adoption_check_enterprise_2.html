@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Adoption Readiness Check — Enterprise Edition</title>
+<style>
+  :root {
+    --green:       #3D5C3A;
+    --green-light: #5A8055;
+    --green-pale:  #EBF2EA;
+    --green-mid:   #C5D9C3;
+    --dark:        #1A1A1A;
+    --mid:         #555;
+    --light:       #F7F9F7;
+    --border:      #D8E5D7;
+    --white:       #FFFFFF;
+    --amber:       #B8860B;
+    --amber-pale:  #FFF8EA;
+    --red:         #8B2500;
+    --red-pale:    #FDF0ED;
+    --font-serif:  'Charter', 'Bitstream Vera Serif', 'Georgia', serif;
+    --font-sans:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 0 1rem 4rem;
+  }
+
+  /* ── Header ── */
+  header {
+    max-width: 1100px;
+    margin: 3rem auto 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 400;
+    color: var(--green);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  header .lead {
+    font-size: 1.15rem;
+    color: var(--mid);
+    max-width: 760px;
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+
+  header .header-meta {
+    font-size: 0.85rem;
+    color: var(--mid);
+  }
+
+  /* ── Two-column layout ── */
+  .layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  /* ── Questions column ── */
+  .questions { min-width: 0; }
+
+  .dim {
+    margin-bottom: 3.5rem;
+  }
+
+  .dim h2 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 400;
+    color: var(--green);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .dim h2 .num {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--green);
+    color: var(--white);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .dim .why {
+    font-size: 0.95rem;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .q {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.15s;
+  }
+
+  .q:focus-within {
+    border-color: var(--green-light);
+  }
+
+  .q .text {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+    color: var(--dark);
+    line-height: 1.45;
+  }
+
+  .q .hint {
+    font-size: 0.85rem;
+    color: var(--mid);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .opts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .opts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .opts label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.65rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--mid);
+    cursor: pointer;
+    background: var(--light);
+    transition: all 0.12s;
+    user-select: none;
+    line-height: 1.25;
+    min-height: 52px;
+  }
+
+  .opts label:hover {
+    border-color: var(--green-mid);
+    color: var(--dark);
+    background: var(--white);
+  }
+
+  .opts label.sel {
+    background: var(--green-pale);
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .opts input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Sticky Results sidebar ── */
+  .results {
+    position: sticky;
+    top: 2rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  }
+
+  .results h2 {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--green);
+    margin-bottom: 1rem;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--mid);
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+  }
+
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    transition: width 0.2s ease;
+  }
+
+  /* Overall Score Card */
+  .score-card {
+    background: var(--green-pale);
+    border-radius: 6px;
+    padding: 1.25rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--green-mid);
+  }
+
+  .score-card.incomplete {
+    background: var(--light);
+    border-color: var(--border);
+  }
+
+  .score-card .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--mid);
+    margin-bottom: 0.25rem;
+  }
+
+  .score-card .score {
+    font-family: var(--font-serif);
+    font-size: 2.8rem;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--green);
+    margin-bottom: 0.25rem;
+  }
+
+  .score-card .score span {
+    font-size: 1.4rem;
+    font-family: var(--font-sans);
+    font-weight: 400;
+  }
+
+  .score-card.incomplete .score { color: var(--mid); }
+
+  .score-card .stage {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+
+  .score-card .verdict {
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 1.45;
+  }
+
+  /* Dimension Bars */
+  .dim-scores { margin-bottom: 1.5rem; }
+
+  .dim-scores h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mid);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .ds-item { margin-bottom: 0.75rem; }
+
+  .ds-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .ds-label .name { font-weight: 500; color: var(--dark); }
+  .ds-label .status { font-weight: 600; }
+
+  .st-strong  { color: var(--green); }
+  .st-develop { color: var(--amber); }
+  .st-risk    { color: var(--red); }
+
+  .ds-track {
+    height: 5px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .ds-fill { height: 100%; transition: width 0.2s; }
+  .fill-strong  { background: var(--green); }
+  .fill-develop { background: var(--amber); }
+  .fill-risk    { background: var(--red); }
+  .fill-none    { background: transparent; }
+
+  /* Recommendations */
+  .recs { margin-bottom: 1.5rem; }
+
+  .recs h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mid);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .recs .sub {
+    font-size: 0.8rem;
+    color: var(--mid);
+    margin-bottom: 0.75rem;
+  }
+
+  .rec {
+    border-radius: 5px;
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .rec.prio-risk    { background: var(--red-pale); border-left: 3px solid var(--red); }
+  .rec.prio-develop { background: var(--amber-pale); border-left: 3px solid var(--amber); }
+
+  .rec .rtitle {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--dark);
+  }
+
+  .rec ul {
+    padding-left: 1.1rem;
+    margin: 0;
+  }
+
+  .rec li { margin-bottom: 0.35rem; }
+  .rec li:last-child { margin-bottom: 0; }
+
+  /* Action Buttons */
+  .btn-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-row button {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--light);
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .btn-row button:hover {
+    background: var(--white);
+    border-color: var(--green-mid);
+    color: var(--green);
+  }
+
+  .results .note {
+    font-size: 0.78rem;
+    color: var(--mid);
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* ── Footer ── */
+  footer {
+    max-width: 1100px;
+    margin: 4rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--mid);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ── Print Styles ── */
+  @media print {
+    body { background: #fff; padding: 0; font-size: 11pt; }
+    header, footer, .btn-row, .header-meta { display: none; }
+    .layout { display: block; }
+    .results { position: static; box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-top: 2rem; }
+    .dim { page-break-inside: avoid; margin-bottom: 1.5rem; }
+    .q { border: 1px solid #ddd; padding: 0.75rem; }
+    .opts label { border: 1px solid #ccc; background: #fff !important; color: #000 !important; }
+    .opts label.sel { font-weight: bold; border-color: #000; text-decoration: underline; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Adoption Readiness Check</h1>
+  <p class="lead">Giving people access to AI tools does not change how they work. Twelve questions, about two minutes: discover where your organisation is actually ready to scale AI — and what to solve first before investing further.</p>
+  <div class="header-meta">
+    Strategic Enterprise Diagnostic &nbsp;·&nbsp; Tailored for business leaders, operations, and enterprise customer success &nbsp;·&nbsp; Runs entirely in your browser
+  </div>
+</header>
+
+<div class="layout">
+  <div class="questions" id="questions"></div>
+
+  <div class="results">
+    <h2>Your Readiness</h2>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Answered</span>
+        <span id="progressText">0 of 12</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="score-card incomplete" id="scoreCard">
+      <div class="label">Overall readiness</div>
+      <div class="score" id="scoreVal">—</div>
+      <div class="stage" id="stageVal">Answer the questions to see your result</div>
+      <div class="verdict" id="verdictVal">Your score updates as you go. An honest low score is far more actionable than a flattering one.</div>
+    </div>
+
+    <div class="dim-scores">
+      <h3>By dimension</h3>
+      <div id="dimScores"></div>
+    </div>
+
+    <div class="recs" id="recsBox">
+      <h3>Where to start</h3>
+      <div class="sub" id="recsSub">Your weakest dimensions appear here with concrete first actions.</div>
+      <div id="recsList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button onclick="window.print()">Print / Save PDF</button>
+      <button onclick="resetAll()">Reset</button>
+    </div>
+
+    <p class="note">
+      A diagnostic, not a verdict — the strategic conversation it sparks matters more than the score.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <span>Enterprise AI Adoption Readiness Check</span>
+  <span>Runs entirely in your browser · No data collected</span>
+</footer>
+
+<script>
+// ── Model ─────────────────────────────────────────────────────────────────────
+const OPTION_COUNT = 4;
+
+const DIMENSIONS = [
+  {
+    key: 'leadership',
+    name: 'Strategy & Leadership',
+    why: 'Adoption delegated downwards stalls. People copy what leadership does, not what they announce.',
+    questions: [
+      {
+        text: 'How visibly do senior leaders in your company use AI in their own daily work?',
+        hint: 'Think town hall demos, shared workflows, or leaders talking about what they built.',
+        opts: ['Never', 'Rarely (1–2 leaders)', 'Sometimes (some teams)', 'Often (openly modeled)']
+      },
+      {
+        text: 'Who is responsible for driving AI adoption across your organization?',
+        hint: 'Look for someone with the time, authority, and budget to help teams change how they work.',
+        opts: ['Nobody', 'Informal enthusiasts', 'Project team, no budget', 'Named leader with budget']
+      },
+      {
+        text: 'Roughly what percentage of employees use AI in a typical week?',
+        hint: 'Count anyone using AI tools regularly for writing, analysis, or daily operational tasks.',
+        opts: ['Under 10%', '10% to 30%', '30% to 60%', 'Over 60%']
+      }
+    ],
+    recs: [
+      'Ask an executive sponsor to use the tool publicly for one real deliverable (e.g., board memo, customer briefing) and share how they did it.',
+      'Designate one clear transformation lead with dedicated budget and executive backing. "Everyone owns it" means nobody does.',
+      'Establish a weekly active user (WAU) benchmark across key departments to track real organizational habit formation.'
+    ]
+  },
+  {
+    key: 'governance',
+    name: 'Governance & Safety',
+    why: 'In European enterprises, compliance clarity is the gateway to scaling beyond small pilots.',
+    questions: [
+      {
+        text: 'Does your company have clear guidelines on where AI is allowed and where it is off-limits?',
+        hint: 'Employees should know which types of company data and tasks are safe for AI.',
+        opts: ['No guidance', 'Informal warnings', 'Written for some teams', 'Clear company-wide rules']
+      },
+      {
+        text: 'What is the status of internal approvals (Data Privacy, Security, Works Council)?',
+        hint: 'Formal alignment is essential to move from test pilots to full company rollouts.',
+        opts: ['Not started / blocked', 'Under review', 'Approved for pilots', 'Approved for production']
+      },
+      {
+        text: 'Do employees know when AI-generated work needs extra review before being used?',
+        hint: 'Look for clear verification steps before sending AI work to customers, executives, or regulators.',
+        opts: ['No shared approach', 'Individual judgment only', 'General guidance', 'Built into workflows']
+      }
+    ],
+    recs: [
+      'Publish a one-page data policy: specify what data is green, yellow, and red, and who to contact when in doubt.',
+      'Engage employee representatives and data privacy officers early with formal non-surveillance and data perimeter assurances.',
+      'Embed simple human-in-the-loop review checklists for customer-facing or compliance-sensitive deliverables.'
+    ]
+  },
+  {
+    key: 'workflows',
+    name: 'Workflows & Business Value',
+    why: 'A tool without a specific workflow is a toy. High-value accounts move from ad-hoc chat to core operations.',
+    questions: [
+      {
+        text: 'How does your company use AI in day-to-day operations today?',
+        hint: 'Look for the shift from simple drafting to handling complex business documents and core operations.',
+        opts: ['Ad-hoc drafting only', 'Summarizing documents', 'Standard team workflows', 'Core embedded ops']
+      },
+      {
+        text: 'How easily can AI tools access the actual documents and systems where your work lives?',
+        hint: 'Consider whether tools connect directly to your files or require constant manual copy-pasting.',
+        opts: ['No access (copy-paste)', 'Manual file uploads', 'Connected to some systems', 'Seamlessly integrated']
+      },
+      {
+        text: 'How does your organization measure whether AI is actually delivering value?',
+        hint: 'Look for real business outcomes like faster project turnaround or cost savings, rather than login counts.',
+        opts: ['Do not measure', 'Track logins / seats', 'Qualitative feedback', 'Tracked business ROI']
+      }
+    ],
+    recs: [
+      'Identify two high-volume recurring workflows (e.g. contract review, customer support triage) and build structured templates.',
+      'Connect AI to real internal knowledge sources so outputs reflect company truth rather than generic web assumptions.',
+      'Define two primary value metrics upfront (e.g. turnaround time reduction, error rate decrease) to validate renewal ROI.'
+    ]
+  },
+  {
+    key: 'culture',
+    name: 'Culture & Enablement',
+    why: 'Handing out software licenses is not enablement. Capability spreads through people, not emails.',
+    questions: [
+      {
+        text: 'How often do teams share useful AI practices and templates with one another?',
+        hint: 'Look for colleagues actively sharing prompts, workflows, and lessons learned.',
+        opts: ['Never (isolated)', 'Occasionally with peers', 'Regularly in teams', 'Company-wide sharing']
+      },
+      {
+        text: 'Does your company provide dedicated work time for employees to learn AI skills?',
+        hint: 'Think internal training workshops, practice sessions, or protected time to experiment.',
+        opts: ['Never', 'Optional personal time', 'Occasional workshops', 'Protected learning time']
+      },
+      {
+        text: 'How openly do people talk about using AI in their daily job?',
+        hint: 'People adopt tools faster when they feel safe and encouraged rather than worried about replacement.',
+        opts: ['Quietly or secretly', 'Close colleagues only', 'Openly in some teams', 'Openly celebrated']
+      }
+    ],
+    recs: [
+      'Create a shared prompt library and departmental lunch-and-learns to make successful workflows visible.',
+      'Establish a Champions Network with protected weekly hours to coach colleagues across business units.',
+      'Communicate AI explicitly as professional augmentation to remove unspoken replacement anxiety.'
+    ]
+  }
+];
+
+const TOTAL_Q = DIMENSIONS.reduce((n, d) => n + d.questions.length, 0);
+const MAX_PER_Q = 3;
+
+const STAGES = [
+  { min: 0,  max: 34,  name: 'Exploring',
+    verdict: 'Foundations are not yet in place. Pilots here tend to impress during demos but fade within a quarter. Focus on executive ownership and governance before scaling software licenses.' },
+  { min: 35, max: 59,  name: 'Building',
+    verdict: 'Real momentum with uneven foundations. Pockets of enthusiasm exist alongside structural gaps. Address the weakest dimensions below to unblock enterprise-wide scaling.' },
+  { min: 60, max: 79,  name: 'Scaling',
+    verdict: 'Strong organizational foundations hold. Push from individual user productivity toward integrated team workflows, and formalize business value metrics for leadership.' },
+  { min: 80, max: 100, name: 'Embedded',
+    verdict: 'AI is deeply integrated into daily operations. Further gains come from connecting deeper systems, tackling complex multi-step pipelines, and expanding proven playbooks.' }
+];
+
+const answers = {};
+
+// ── Render questions ──────────────────────────────────────────────────────────
+function renderQuestions() {
+  const root = document.getElementById('questions');
+  root.innerHTML = DIMENSIONS.map((dim, di) => `
+    <div class="dim">
+      <h2><span class="num">${di + 1}</span> ${dim.name}</h2>
+      <p class="why">${dim.why}</p>
+      ${dim.questions.map((q, qi) => {
+        const id = `${dim.key}_${qi}`;
+        return `
+        <div class="q">
+          <div class="text">${q.text}</div>
+          <div class="hint">${q.hint}</div>
+          <div class="opts" role="radiogroup" aria-label="${q.text.replace(/"/g, '&quot;')}">
+            ${q.opts.map((s, si) => `
+              <label id="lbl_${id}_${si}" onclick="setAnswer('${id}', ${si})">
+                <input type="radio" name="${id}" value="${si}"
+                       onchange="setAnswer('${id}', ${si})"
+                       onfocus="this.parentNode.classList.add('focus')"
+                       onblur="this.parentNode.classList.remove('focus')">
+                ${s}
+              </label>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+}
+
+function setAnswer(id, value) {
+  answers[id] = value;
+  for (let i = 0; i < OPTION_COUNT; i++) {
+    const el = document.getElementById(`lbl_${id}_${i}`);
+    if (el) el.classList.toggle('sel', i === value);
+  }
+  update();
+}
+
+function resetAll() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.opts label').forEach(l => l.classList.remove('sel'));
+  document.querySelectorAll('.opts input').forEach(i => { i.checked = false; });
+  update();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Scoring ──────────────────────────────────────────────────────────────────
+function dimScore(dim) {
+  let sum = 0, answered = 0;
+  dim.questions.forEach((_, qi) => {
+    const v = answers[`${dim.key}_${qi}`];
+    if (v !== undefined) { sum += v; answered++; }
+  });
+  return {
+    answered,
+    total: dim.questions.length,
+    pct: answered ? Math.round((sum / (answered * MAX_PER_Q)) * 100) : null
+  };
+}
+
+function statusOf(pct) {
+  if (pct === null)  return { cls: 'none',    label: '—',          text: '' };
+  if (pct >= 67)     return { cls: 'strong',  label: '✓ Strong',   text: 'st-strong' };
+  if (pct >= 34)     return { cls: 'develop', label: '◐ Developing', text: 'st-develop' };
+  return               { cls: 'risk',    label: '! At risk',  text: 'st-risk' };
+}
+
+function update() {
+  const answeredCount = Object.keys(answers).length;
+
+  // Progress
+  document.getElementById('progressText').textContent = `${answeredCount} of ${TOTAL_Q}`;
+  document.getElementById('progressFill').style.width = (answeredCount / TOTAL_Q * 100) + '%';
+
+  // Per-dimension
+  const scores = DIMENSIONS.map(d => ({ dim: d, ...dimScore(d) }));
+  document.getElementById('dimScores').innerHTML = scores.map(s => {
+    const st = statusOf(s.pct);
+    return `
+      <div class="ds-item">
+        <div class="ds-label">
+          <span class="name">${s.dim.name}</span>
+          <span class="status ${st.text}">${s.pct === null ? '—' : st.label + ' · ' + s.pct + '%'}</span>
+        </div>
+        <div class="ds-track"><div class="ds-fill fill-${st.cls}" style="width:${s.pct === null ? 0 : s.pct}%"></div></div>
+      </div>`;
+  }).join('');
+
+  // Overall
+  const card = document.getElementById('scoreCard');
+  if (answeredCount === 0) {
+    card.classList.add('incomplete');
+    document.getElementById('scoreVal').textContent = '—';
+    document.getElementById('stageVal').textContent = 'Answer the questions to see your result';
+    document.getElementById('verdictVal').textContent = 'Your score updates as you go. An honest low score is far more actionable than a flattering one.';
+  } else {
+    const sum = Object.values(answers).reduce((a, b) => a + b, 0);
+    const overall = Math.round((sum / (answeredCount * MAX_PER_Q)) * 100);
+    const stage = STAGES.find(s => overall >= s.min && overall <= s.max);
+    card.classList.remove('incomplete');
+    document.getElementById('scoreVal').innerHTML = overall + '<span>%</span>';
+    document.getElementById('stageVal').textContent = stage.name;
+    document.getElementById('verdictVal').textContent =
+      (answeredCount < TOTAL_Q ? `Based on ${answeredCount} of ${TOTAL_Q} answers. ` : '') + stage.verdict;
+  }
+
+  // Recommendations — weakest answered dimensions first
+  const weak = scores.filter(s => s.pct !== null && s.pct < 67)
+                     .sort((a, b) => a.pct - b.pct)
+                     .slice(0, 3);
+  const list = document.getElementById('recsList');
+  const sub = document.getElementById('recsSub');
+
+  if (answeredCount === 0) {
+    sub.textContent = 'Your weakest dimensions appear here with concrete first actions.';
+    list.innerHTML = '';
+  } else if (weak.length === 0) {
+    sub.textContent = 'All answered dimensions meet strong maturity thresholds.';
+    list.innerHTML = `<div class="rec"><div class="rtitle">Next Level Expansion</div><ul>
+      <li>Scale from departmental workflows into core enterprise systems to compound operational value.</li>
+      <li>Document your successful internal case studies to accelerate adoption in adjacent business units.</li></ul></div>`;
+  } else {
+    sub.textContent = `Your ${weak.length === 1 ? 'primary focus area' : weak.length + ' weakest areas'}, prioritized by urgency.`;
+    list.innerHTML = weak.map(s => {
+      const st = statusOf(s.pct);
+      return `
+        <div class="rec prio-${st.cls}">
+          <div class="rtitle">${s.dim.name} — ${s.pct}%</div>
+          <ul>${s.dim.recs.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>`;
+    }).join('');
+  }
+}
+
+// ── Print / Save-PDF filename ─────────────────────────────────────────────────
+const PAGE_TITLE = document.title;
+window.addEventListener('beforeprint', () => { document.title = 'AI-Adoption-Readiness-Results'; });
+window.addEventListener('afterprint',  () => { document.title = PAGE_TITLE; });
+
+renderQuestions();
+update();
+</script>
+</body>
+</html>
