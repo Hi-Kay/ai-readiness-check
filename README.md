@@ -45,7 +45,7 @@ Each pillar is scored red, amber or green. You get an overall readiness score, a
 
 It works as a self-assessment, but it is more useful as a **conversation structure**. Run it live with the project team and the disagreements are the real output: when the sponsor scores leadership 3 and the team scores it 1, you have learned more than the score will ever tell you.
 
-Everything runs in the browser. Nothing is uploaded, nothing is stored, no analytics — which is also what makes it safe to open in someone else's meeting room. **Export Summary** prints a clean one-page result (score, RAG breakdown, action plan) to leave behind, with the questions themselves omitted.
+Everything runs in the browser. Nothing is uploaded, nothing is stored, no analytics — which is also what makes it safe to open in someone else's meeting room. **Print / Save PDF** produces a clean one-page result — score, pillar breakdown, action plan — to leave behind, with the questions themselves omitted.
 
 ---
 
