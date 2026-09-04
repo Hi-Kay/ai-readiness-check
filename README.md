@@ -1,6 +1,6 @@
 # AI Adoption Readiness Check
 
-**A 14-question diagnostic that shows where an organisation is actually ready to adopt AI — and what to fix first.**
+**A 12-question diagnostic that shows where your organisation is actually ready to adopt AI — and what to fix first.**
 
 👉 **[Take the assessment →](https://hi-kay.github.io/ai-readiness-check/)**
 
@@ -18,41 +18,42 @@ An ROI calculator answers *"what is the prize?"* — I built [one of those too](
 
 ## What it measures
 
-Seven dimensions, two questions each. Every one of them is somewhere I have watched a rollout succeed or stall:
+Four pillars, three questions each. Every one of them is somewhere I have watched a rollout succeed or stall:
 
-| Dimension | The question underneath |
+| Pillar | The question underneath |
 |---|---|
-| **Leadership & sponsorship** | Do leaders use it themselves, or only announce it? |
-| **Use-case clarity** | Do people know what to actually do with it on a Tuesday? |
-| **Skills & enablement** | Was there onboarding, or just an account? |
-| **Technical foundation** | How much friction sits between wanting to use it and using it? |
-| **Governance, security & compliance** | Is the legal path clear — including the works council? |
-| **Trust & culture** | Do people believe it is here to help them or to replace them? |
-| **Measurement & value tracking** | Can you see actual usage, or only licences sold? |
+| **Strategy & Leadership** | Do leaders use it themselves, or only announce it? |
+| **Governance, Trust & Safety** | Is the path to production clear — data rules, privacy, works council? |
+| **Workflows & System Integration** | Is AI reaching the systems where the work lives, or stuck in ad-hoc chat? |
+| **Enablement & Champions Network** | Was there onboarding and peer support, or just a licence? |
 
-You get an overall readiness score, a stage (Exploring → Building → Scaling → Embedded), a per-dimension breakdown, and **concrete first actions for your three weakest areas** — the part that actually matters.
+Answers are scored **Red / Amber / Green** per pillar. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a RAG breakdown, and **concrete first actions for your weakest pillars, worst first** — which is the part that actually matters.
 
 ---
 
-## Two design decisions worth explaining
+## Three design decisions worth explaining
 
-**It is built to produce uncomfortable answers.** The four-point scale has no neutral middle, so "we sort of have that" is not an available answer. A flattering score is worthless: the value of a diagnostic is that it finds something. The tool says so on screen.
+**It is built to produce uncomfortable answers.** The four-point scale has no neutral middle, so "we sort of have that" is not an available answer. A flattering score is worthless: the value of a diagnostic is that it finds something.
 
-**Governance includes the works council.** Most AI readiness assessments are written in the US and quietly assume US conditions. In German enterprises, the Betriebsrat is a genuine gate on rolling out a tool that touches how employees work — and involving them late is, in my experience, the single most common reason a rollout slips by months. An early Betriebsvereinbarung is far faster than one negotiated after a stalled rollout. Any readiness model for DACH that omits this is measuring the wrong country.
+**Governance includes the works council.** Most AI readiness assessments are written in the US and quietly assume US conditions. In German enterprises the Betriebsrat is a genuine gate on rolling out a tool that changes how employees work — and involving them late is, in my experience, the single most common reason a rollout slips by months. An early Betriebsvereinbarung is far faster than one negotiated after a stalled rollout. Any readiness model for DACH that omits this is measuring the wrong country.
+
+**The recommendations are written for the person filling it in.** Not "here is what a vendor should do for you" — the actions are yours to take. Where an account team can help, it says so, once.
 
 ---
 
 ## Using it in practice
 
-It works as a self-assessment, but it is more useful as a **conversation structure**. Run it live with a customer's project team and the disagreements are the real output: when the sponsor scores leadership 3 and the team scores it 1, you have learned more than the score will ever tell you.
+It works as a self-assessment, but it is more useful as a **conversation structure**. Run it live with the project team and the disagreements are the real output: when the sponsor scores leadership 3 and the team scores it 1, you have learned more than the score will ever tell you.
 
-Everything runs in the browser. Nothing is uploaded, nothing is stored, no analytics — which is also what makes it safe to open in someone else's meeting room. Print or save as PDF to leave the result behind.
+Everything runs in the browser. Nothing is uploaded, nothing is stored, no analytics — which is also what makes it safe to open in someone else's meeting room. **Export Summary** prints a clean one-page result (score, RAG breakdown, action plan) to leave behind, with the questions themselves omitted.
 
 ---
 
 ## Tech
 
-A single self-contained HTML file. Vanilla JavaScript, no framework, no build step, no dependencies, no network calls at all. Questions and recommendations live in one data structure at the top of the script — fork it and rewrite them for your own context.
+A single self-contained HTML file. Vanilla JavaScript, no framework, no build step, no dependencies, no network calls at all. Questions, hints and recommendations live in one `DIMENSIONS` array at the top of the script — fork it and rewrite them for your own context.
+
+Accessible by keyboard and screen reader; the dark UI has a dedicated print stylesheet so exported PDFs are readable on paper.
 
 Built with [Claude Code](https://claude.com/claude-code).
 
@@ -69,4 +70,4 @@ Customer Success Manager → DataOps lead → Head of Value Engineering, all in 
 
 ---
 
-*Fork it, adapt it, use it with your own customers. If you find it useful, a LinkedIn connection is always welcome.*
+*Fork it, adapt it, use it with your own teams. If you find it useful, a LinkedIn connection is always welcome.*
