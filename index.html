@@ -425,12 +425,13 @@
 
   /* ── Print: dark UI does not print. Force a light, readable summary. ── */
   @media print {
-    @page { margin: 16mm; }
+    @page { margin: 14mm 16mm; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     body {
       background: #FFFFFF !important;
       color: #111111 !important;
       padding: 0;
-      font-size: 11pt;
+      font-size: 10pt;
     }
     /* The questions column is the working surface; the summary is what gets shared. */
     #questions-root, .btn-group { display: none !important; }
@@ -440,8 +441,8 @@
       border: 1px solid #CCCCCC !important;
       position: static !important;
       max-width: none;
-      margin: 0 0 12pt 0;
-      break-inside: avoid;
+      margin: 0 0 8pt 0;
+      padding: 10pt 12pt;
     }
     header h1 { color: #111111 !important; }
     header p, .meta-line, .verdict-text, .panel-tag, .pillar-title, .handoff-note,
@@ -451,10 +452,12 @@
     .p-status.st-red, .score-val.color-red { color: #B91C1C !important; }
     .p-status.st-yel, .score-val.color-yel { color: #B45309 !important; }
     .p-status.st-grn, .score-val.color-grn { color: #047857 !important; }
-    .p-track { background: #EEEEEE !important; border: 1px solid #DDDDDD; }
-    .fill-red { background: #B91C1C !important; }
-    .fill-yel { background: #B45309 !important; }
-    .fill-grn { background: #047857 !important; }
+    .p-item { break-inside: avoid; }
+    .p-track { background: none !important; border: 1px solid #BBBBBB; height: 9px; }
+    .p-fill  { background: none !important; height: 100%; box-sizing: border-box; border-top: 7px solid #999999; }
+    .fill-red { border-top-color: #B91C1C !important; }
+    .fill-yel { border-top-color: #B45309 !important; }
+    .fill-grn { border-top-color: #047857 !important; }
     .prescription-card {
       background: #FFFFFF !important;
       color: #222222 !important;
@@ -466,7 +469,17 @@
     .prescription-card.p-grn { border-left: 3px solid #047857 !important; }
     .prescription-card strong { color: #000000 !important; }
     .rag-badge { color: #111111 !important; border-color: #999999 !important; background: none !important; }
-    .terminal-dots { display: none; }
+    .terminal-bar { display: none; }
+    header h1 { font-size: 1.2rem; margin-bottom: 4pt; }
+    header p { font-size: 0.82rem; }
+    .meta-line { margin-top: 5pt; }
+    .verdict-text { margin-bottom: 7pt; padding-bottom: 6pt; }
+    .p-item { margin-bottom: 5pt; }
+    .action-box { margin-top: 8pt; padding-top: 6pt; }
+    .action-box h4 { color: #111111 !important; }
+    .prescription-card { padding: 6pt 8pt; margin-bottom: 5pt; font-size: 9.5pt; line-height: 1.38; }
+    .handoff-note { margin-top: 6pt; padding-top: 5pt; }
+    footer.site-foot { display: none; }   /* header already carries the attribution */
   }
 </style>
 </head>
