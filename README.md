@@ -27,11 +27,14 @@ Four pillars, three questions each. Every one of them is somewhere I have watche
 | **Workflows & System Integration** | Is AI reaching the systems where the work lives, or stuck in ad-hoc chat? |
 | **Enablement & Champions Network** | Was there onboarding and peer support, or just a licence? |
 
-Each pillar is scored red, amber or green. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a pillar-by-pillar breakdown, and **concrete first actions for your weakest pillars, worst first** — which is the part that actually matters.
+Each pillar is scored red, amber or green. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a pillar-by-pillar breakdown, and **a concrete first action for every weak answer, worst first**. The action is tied to the specific question, not the pillar average — which is the part that actually matters.
 
 ---
 
-## Three design decisions worth explaining
+## Four design decisions worth explaining
+
+**A pillar cannot be "Strong" while one of its answers is weak.** Two strong answers and one "Never" average 67%, which would pass a plain threshold and hide the gap. Any answer in the bottom two options caps its pillar at "Developing" and produces its own action card.
+
 
 **It is built to produce uncomfortable answers.** The four-point scale has no neutral middle, so "we sort of have that" is not an available answer. A flattering score is worthless: the value of a diagnostic is that it finds something.
 

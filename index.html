@@ -360,6 +360,14 @@
     color: #D1FAE5;
   }
 
+  .card-q {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+
   .prescription-card strong {
     color: #FFF;
     display: block;
@@ -468,6 +476,7 @@
     .prescription-card.p-yel { border-left: 3px solid #B45309 !important; }
     .prescription-card.p-grn { border-left: 3px solid #047857 !important; }
     .prescription-card strong { color: #000000 !important; }
+    .card-q { color: #555555 !important; }
     .rag-badge { color: #111111 !important; border-color: #999999 !important; background: none !important; }
     .terminal-bar { display: none; }
     header h1 { font-size: 1.2rem; margin-bottom: 4pt; }
@@ -553,22 +562,21 @@ const DIMENSIONS = [
       {
         text: 'How visibly do senior leaders use AI in their own work?',
         hint: 'Town hall demos, board briefings, or leadership-shared workflows.',
-        opts: ['Never', 'Rarely (1-2 leaders)', 'Sometimes (few teams)', 'Regularly & openly']
+        opts: ['Never', 'Rarely (1-2 leaders)', 'Sometimes (few teams)', 'Regularly & openly'],
+        fix: 'Ask one senior leader to walk through a real AI-assisted task at the next all-hands. Visible executive use moves adoption faster than any announcement.'
       },
       {
         text: 'Who is responsible for driving AI adoption across your organization?',
         hint: 'A dedicated leader with budget vs. uncoordinated grassroots enthusiasts.',
-        opts: ['Nobody', 'Informal advocates', 'Team with no budget', 'Named lead with budget']
+        opts: ['Nobody', 'Informal advocates', 'Team with no budget', 'Named lead with budget'],
+        fix: 'Name one person accountable for AI adoption, with budget and decision rights. "Everyone owns it" reliably means nobody does.'
       },
       {
         text: 'What percentage of knowledge workers use AI weekly?',
         hint: 'Regular usage for writing, research, coding, or data operations.',
-        opts: ['< 10%', '10% to 30%', '30% to 60%', '> 60%']
+        opts: ['< 10%', '10% to 30%', '30% to 60%', '> 60%'],
+        fix: 'Pick the two teams with the most repetitive text work and get them to weekly use first. Broad adoption follows visible wins in specific teams, not company-wide announcements.'
       }
-    ],
-    prescriptions: [
-      'Ask one senior leader to walk through a real AI-assisted task at the next all-hands. Visible executive use moves adoption faster than any announcement.',
-      'Name one person accountable for AI adoption, with budget and decision rights. "Everyone owns it" reliably means nobody does.'
     ]
   },
   {
@@ -579,22 +587,21 @@ const DIMENSIONS = [
       {
         text: 'Are there clear corporate rules on where AI is permitted or off-limits?',
         hint: 'Clear classification of approved vs. restricted company data.',
-        opts: ['No guidance', 'Informal warnings', 'Written for some teams', 'Clear company policy']
+        opts: ['No guidance', 'Informal warnings', 'Written for some teams', 'Clear company policy'],
+        fix: 'Publish a one-page rule: which data may go into AI tools, which may not, and who to ask when unsure. Ambiguity does not make people careful — it makes them stop.'
       },
       {
         text: 'What is the status of internal approvals (Data Privacy, Works Council)?',
         hint: 'Works Council (Betriebsrat) and data privacy sign-off.',
-        opts: ['Not started / blocked', 'Under active review', 'Approved for pilots', 'Production approved / N/A']
+        opts: ['Not started / blocked', 'Under active review', 'Approved for pilots', 'Production approved / N/A'],
+        fix: 'Open data privacy and works council conversations before the rollout, not after a successful pilot. Approval negotiated early is far faster than approval retrofitted.'
       },
       {
         text: 'Do teams have review steps for AI-generated work?',
         hint: 'Human-in-the-loop validation for customer or compliance-sensitive tasks.',
-        opts: ['No shared approach', 'Individual discretion', 'General guidance', 'Built into workflow']
+        opts: ['No shared approach', 'Individual discretion', 'General guidance', 'Built into workflow'],
+        fix: 'Agree where a person checks AI output before it reaches a customer or a regulator, and write it into the workflow. A review step that exists only in people\'s heads disappears under time pressure.'
       }
-    ],
-    prescriptions: [
-      'Publish a one-page rule: which data may go into AI tools, which may not, and who to ask when unsure. Ambiguity does not make people careful — it makes them stop.',
-      'Open data privacy and works council conversations before the rollout, not after a successful pilot. Approval negotiated early is far faster than approval retrofitted.'
     ]
   },
   {
@@ -605,22 +612,21 @@ const DIMENSIONS = [
       {
         text: 'How does your company currently utilize AI in operations?',
         hint: 'Shift from basic ad-hoc drafting to complex core workflows.',
-        opts: ['Ad-hoc chat only', 'Document summaries', 'Standard team workflows', 'Core embedded ops']
+        opts: ['Ad-hoc chat only', 'Document summaries', 'Standard team workflows', 'Core embedded ops'],
+        fix: 'Pick two high-volume, text-heavy workflows and move them out of ad-hoc chat into a documented, repeatable process.'
       },
       {
         text: 'How easily can AI tools access your internal documents and systems?',
         hint: 'Manual copy-paste vs. connected drives, wikis, and databases.',
-        opts: ['No access (copy-paste)', 'Manual file upload', 'Connected to some tools', 'Seamlessly integrated']
+        opts: ['No access (copy-paste)', 'Manual file upload', 'Connected to some tools', 'Seamlessly integrated'],
+        fix: 'Connect AI to the systems where the work actually lives. Copy-paste caps the value at individual convenience.'
       },
       {
         text: 'How is the commercial business impact of AI tracked?',
         hint: 'Outcome metrics (cycle time, cost saved) vs. vanity seat counts.',
-        opts: ['Not measured', 'Seat/login counts', 'Qualitative feedback', 'Tracked ROI / cycle-time']
+        opts: ['Not measured', 'Seat/login counts', 'Qualitative feedback', 'Tracked ROI / cycle-time'],
+        fix: 'Agree two or three outcome metrics before the next expansion — hours returned, turnaround time, error rate. Seat and login counts are not a measure of value.'
       }
-    ],
-    prescriptions: [
-      'Pick two high-volume, text-heavy workflows and move them out of ad-hoc chat into a documented, repeatable process. Connect AI to the systems where the work actually lives — copy-paste caps the value at individual convenience.',
-      'Agree two or three outcome metrics before the next expansion — hours returned, turnaround time, error rate. Seat and login counts are not a measure of value.'
     ]
   },
   {
@@ -631,22 +637,21 @@ const DIMENSIONS = [
       {
         text: 'How frequently do teams share prompt templates and best practices?',
         hint: 'Active internal prompt repositories and peer lunch-and-learns.',
-        opts: ['Never (siloed)', 'Informally with peers', 'Regularly in teams', 'Structured company-wide']
+        opts: ['Never (siloed)', 'Informally with peers', 'Regularly in teams', 'Structured company-wide'],
+        fix: 'Start a shared place for prompts and worked examples, and have one team seed it. People copy what they can see; a template nobody can find helps nobody.'
       },
       {
         text: 'Does the company allocate dedicated work time for AI skill building?',
         hint: 'Protected hackathons, clinics, and structured onboarding.',
-        opts: ['Never', 'Personal time only', 'Occasional sessions', 'Protected weekly time']
+        opts: ['Never', 'Personal time only', 'Occasional sessions', 'Protected weekly time'],
+        fix: 'Recruit one champion per department and give them protected time, not just the title. Watching a peer do it convinces people in a way training material does not.'
       },
       {
         text: 'How openly do employees discuss AI usage in their daily work?',
         hint: 'Discussed openly, or quietly, with unspoken worry about being replaced.',
-        opts: ['Quietly / secretly', 'Close peers only', 'Openly in some teams', 'Openly celebrated']
+        opts: ['Quietly / secretly', 'Close peers only', 'Openly in some teams', 'Openly celebrated'],
+        fix: 'Answer the job-security question out loud and specifically. Silence is heard as confirmation, and quiet fear is one of the most common reasons adoption stalls.'
       }
-    ],
-    prescriptions: [
-      'Recruit one champion per department and give them protected time, not just the title. Watching a peer do it convinces people in a way training material does not.',
-      'Answer the job-security question out loud and specifically. Silence is heard as confirmation, and quiet fear is one of the most common reasons adoption stalls.'
     ]
   }
 ];
@@ -716,17 +721,22 @@ function calculateResults() {
 
   let totalSum = 0;
   const pillarScores = DIMENSIONS.map(dim => {
-    let dimSum = 0, dimAnswered = 0;
+    let dimSum = 0, dimAnswered = 0, dimMin = 3;
     dim.questions.forEach((_, qi) => {
       const v = answers[`${dim.key}_${qi}`];
       if (v !== undefined) {
         dimSum += v;
         dimAnswered++;
+        dimMin = Math.min(dimMin, v);
       }
     });
     const pct = dimAnswered > 0 ? Math.round((dimSum / (dimAnswered * 3)) * 100) : null;
     totalSum += dimSum;
-    return { dim, pct, dimAnswered, rag: getRAG(pct) };
+    // The average hides single gaps: two strong answers and one "Never" still score 67%.
+    // A pillar is only Strong when none of its answers sits in the bottom two options.
+    let rag = getRAG(pct);
+    if (rag.key === 'grn' && dimMin <= 1) rag = getRAG(50);
+    return { dim, pct, dimAnswered, dimMin, rag };
   });
 
   const overallScore = Math.round((totalSum / (count * 3)) * 100);
@@ -767,26 +777,33 @@ function calculateResults() {
     </div>
   `).join('');
 
-  // Render Action Plan (Sorted by Red first, then Yellow)
-  const priorityPillars = pillarScores
-    .filter(p => p.pct !== null && p.pct < 67)
-    .sort((a, b) => a.pct - b.pct);
+  // Action plan: one card per weak ANSWER (bottom two options), worst first.
+  // Pillar averages hide single gaps, and the fix has to match the question.
+  const weak = [];
+  DIMENSIONS.forEach((dim, di) => dim.questions.forEach((q, qi) => {
+    const v = answers[`${dim.key}_${qi}`];
+    if (v !== undefined && v <= 1) weak.push({ dim, q, v, order: di * 10 + qi });
+  }));
+  weak.sort((a, b) => a.v - b.v || a.order - b.order);
+  const SHOW = 5;
 
   const actionBox = document.getElementById('actionList');
-  if (priorityPillars.length > 0) {
-    actionBox.innerHTML = priorityPillars.map(wp => `
-      <div class="prescription-card ${wp.rag.pCls}">
-        <strong>${wp.rag.sym} ${wp.dim.name} — ${wp.pct}%</strong>
-        • ${wp.dim.prescriptions[0]}<br>
-        • ${wp.dim.prescriptions[1]}
+  if (weak.length > 0) {
+    const rest = weak.length - SHOW;
+    actionBox.innerHTML = weak.slice(0, SHOW).map(w => `
+      <div class="prescription-card ${w.v === 0 ? 'p-red' : 'p-yel'}">
+        <strong>${w.v === 0 ? '■' : '▲'} ${w.dim.name}</strong>
+        <span class="card-q">${w.q.text} · you answered “${w.q.opts[w.v]}”</span>
+        ${w.q.fix}
       </div>
-    `).join('') + `
-      <div class="handoff-note">Take the red items into your next review with your account team — those are the fastest to fix together.</div>`;
+    `).join('')
+    + (rest > 0 ? `<div class="handoff-note">${rest} more weak answer${rest > 1 ? 's' : ''} not listed here; the pillar bars above show where.</div>` : '')
+    + `<div class="handoff-note">Take the red items into your next review with your account team — those are the fastest to fix together.</div>`;
   } else {
     actionBox.innerHTML = `
       <div class="prescription-card p-grn">
         <strong>Nothing critical — build on it</strong>
-        No pillar is below the threshold in what you have answered so far. The next gains come from depth: move repetitive workflows into automation, and write up what already works as internal case studies — they are what convince the next department.
+        No answer is in the bottom two options so far. The next gains come from depth: move repetitive workflows into automation, and write up what already works as internal case studies — they are what convince the next department.
       </div>`;
   }
 }
