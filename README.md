@@ -8,24 +8,29 @@
 
 ## Why this exists
 
-I spent three years helping cement and concrete producers adopt AI. The business case was rarely the hard part. Once you have shown a plant director what better quality control is worth, the maths is not what stops them.
+I spent three years helping cement producers adopt AI.
+What those years taught me is that deploying AI successfully has never been just about access or
+tooling. It means helping experienced people change established ways of working, work through initial
+friction before the benefits become visible, and build confidence through evidence. My work sat at that
+intersection: making model outputs meaningful to plant and laboratory teams, aligning sponsors around
+business outcomes, and translating early proof into broader rollout.
 
-What stops them is everything around the maths. Whether management uses the tool themselves. Whether anyone has told the lab team what to actually do with it. Whether IT can provision access this month. Whether the works council has seen it. Whether people quietly believe the thing is there to replace them.
+An ROI calculator answers *"what is the benefit?"* — I built [one of those too](https://hi-kay.github.io/ai-value-calculator/). This tool helps to identify bottlenecks: **"what is in the way to get there?"**
 
-An ROI calculator answers *"what is the prize?"* — I built [one of those too](https://hi-kay.github.io/ai-value-calculator/). This tool answers the question that decides whether you ever collect it: **"can this organisation actually get there, and what is in the way?"**
+Has anyone told the lab team what to actually do with it? Can IT can provision access this month? Do people quietly believe the thing is there to replace them? 
 
 ---
 
 ## What it measures
 
-Four pillars, three questions each. Every one of them is somewhere I have watched a rollout succeed or stall:
+Four pillars, three questions each:
 
 | Pillar | The question underneath |
 |---|---|
 | **Strategy & Leadership** | Do leaders use it themselves, or only announce it? |
 | **Governance, Trust & Safety** | Is the path to production clear — data rules, privacy, works council? |
 | **Workflows & System Integration** | Is AI reaching the systems where the work lives, or stuck in ad-hoc chat? |
-| **Enablement & Champions Network** | Was there onboarding and peer support, or just a licence? |
+| **Enablement & Champions Network** | Do people have time to adopt and learn? Are peers support each other? |
 
 Each pillar is scored red, amber or green. You get an overall readiness score, a maturity stage (Exploring → Building → Scaling → Embedded), a pillar-by-pillar breakdown, and **a concrete first action for every weak answer, worst first**. The action is tied to the specific question, not the pillar average — which is the part that actually matters.
 
